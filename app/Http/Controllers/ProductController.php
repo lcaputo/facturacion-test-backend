@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bill;
+use App\Models\Product;
 
-class BillController extends Controller
+class ProductController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -18,34 +18,31 @@ class BillController extends Controller
     }
 
     public function list() {
-        
-        $bill = Bill::where('active', 1)->get();
-
-        return response()->json($bill);
+        $product = Product::where('active', 1)->get();
+        return response()->json($product);
     }
 
     public function detail($id) {
-        $bill = Bill::find($id);
-        return response()->json($bill);
+        $product = Product::find($id);
+        return response()->json($product);
     }
 
     public function create(Request $request) {
-        $input = $request->only('employee_id', 'client_id', 'price', 'iva', 'total');
+        $input = $request->only('name', 'description', 'price');
         
         try
         {
-            $bill = new Bill();
+            $product = new Product();
 
-            $bill->employee_id  = $input['employee_id'];
-            $bill->client_id    = $input['client_id'];
-            $bill->price        = $input['price'];
-            $bill->iva          = $input['iva'];
-            $bill->total        = $input['total'];
+            $product->name          = $input['name'];
+            $product->description   = $input['description'];
+            $product->price         = $input['price'];
 
-            if ( $bill->save() ) {
+
+            if ( $product->save() ) {
                 $code = 201;
                 $output = [
-                    'bill' => $bill,
+                    'product' => $product,
                     'code' => $code,
                     'message' => 'Bill created successfully.'
                 ];
@@ -70,29 +67,27 @@ class BillController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $input = $request->only('employee_id', 'client_id', 'price', 'iva', 'total');
+        $input = $request->only('name', 'description', 'price');
         
         try
         {
-            $bill = Bill::find($id);
+            $product = Product::find($id);
         
-            $bill->employee_id  = $input['employee_id'];
-            $bill->client_id    = $input['client_id'];
-            $bill->price        = $input['price'];
-            $bill->iva          = $input['iva'];
-            $bill->total        = $input['total'];
+            $product->name          = $input['name'];
+            $product->description   = $input['description'];
+            $product->price         = $input['price'];
 
-            if ( $bill->save() ) {
+
+            if ( $product->save() ) {
                 $code = 200;
                 $output = [
-                    'bill' => $bill,
+                    'product' => $product,
                     'code' => $code,
                     'message' => 'Bill updated successfully.'
                 ];
             } else {
                 $code = 500;
                 $output = [
-                    'bill' => $bill,
                     'code' => $code,
                     'message' => 'An error ocurred updating bill.'
                 ];
@@ -105,16 +100,17 @@ class BillController extends Controller
                 'message' => 'An error ocurred updating bill.'
             ];
         }
+        return response()->json($output, $code);
     }
 
     public function delete($id) {
         try
         {
-            $bill = Bill::find($id);
+            $product = Product::findOrFail($id);
             
-            $bill->active = 0;
+            $product->active = 0;
             
-            if ( $bill->save() ) {
+            if ( $product->save() ) {
                 $code = 200;
                 $output = [
                     'code' => $code,
@@ -135,7 +131,9 @@ class BillController extends Controller
                 'message' => 'An error ocurred deleting bill.'
             ];
         }
+        return response()->json($output, $code);
     }
+
 
     //
 }

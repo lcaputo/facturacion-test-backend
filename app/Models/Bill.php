@@ -11,8 +11,10 @@ class Bill extends Model
      *
      * @var array
      */
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'employee_id',
+        'active',
+        'user_id',
         'client_id',
         'price',
         'iva',
@@ -26,4 +28,8 @@ class Bill extends Model
      * @var array
      */
     protected $hidden = [];
+
+    public function user() {
+        return $this->belongsTo('App\Models\User');
+    }
 }

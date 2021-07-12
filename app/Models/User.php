@@ -21,8 +21,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
+
+
+    protected $primaryKey = 'id';
+
     protected $fillable = [
-        'name', 'email',
+        'active', 'name', 'nit', 'email'
     ];
 
     /**
@@ -52,6 +56,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function bills() {
+        return $this->hasMany('App\Models\Bill');
     }
 
 }

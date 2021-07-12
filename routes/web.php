@@ -24,13 +24,35 @@ $router->group(['prefix' => 'api/v1'], function() use($router){
     $router->post('logout', 'UserController@logout');
     $router->post('refresh', 'UserController@refresh');
 
-    $router->get('bill/list', 'BillController@list');
-    $router->get('bill/create', 'BillController@create');
-    $router->get('bill/update', 'BillController@update');
-    $router->get('bill/delete', 'BillController@delete');
-
     $router->group(['middleware' => 'auth'], function () use ($router) {
-        $router->get('me', ['as' => 'users', 'uses' => 'UserController@me']);
+
+        $router->get('me', ['as' => 'user', 'uses' => 'UserController@me']);
+        $router->get('user/{id}', 'UserController@findById');
+
+        $router->get('product/list', 'ProductController@list');
+        $router->get('product/{id}', 'ProductController@detail');
+        $router->post('product/create', 'ProductController@create');
+        $router->patch('product/update/{id}', 'ProductController@update');
+        $router->delete('product/delete/{id}', 'ProductController@delete');
+    
+        $router->get('bill/list', 'BillController@list');
+        $router->get('bill/{id}', 'BillController@detail');
+        $router->post('bill/create', 'BillController@create');
+        $router->patch('bill/update/{id}', 'BillController@update');
+        $router->delete('bill/delete/{id}', 'BillController@delete');
+    
+        $router->get('bill/detail/list', 'BillDetailController@list');
+        $router->get('bill/detail/{id}', 'BillDetailController@detail');
+        $router->post('bill/detail/create', 'BillDetailController@create');
+        $router->patch('bill/detail/update/{id}', 'BillDetailController@update');
+        $router->delete('bill/detail/delete/{id}', 'BillDetailController@delete');
+    
+        $router->get('client/list', 'ClientController@list');
+        $router->get('client/{cc}', 'ClientController@findByCC');        
+        $router->post('client/create', 'ClientController@create');
+        $router->patch('client/update/{id}', 'ClientController@update');
+        $router->delete('client/delete/{id}', 'ClientController@delete');
+
     });
     
 });

@@ -23,6 +23,11 @@ class UserController extends Controller
         $this->jwt = $jwt;
     }
 
+    public function findById($id) {
+        $user = User::find($id);
+        return response()->json($user);
+    }
+
     public function register(Request $request)
     {
         // Validate data
@@ -32,14 +37,15 @@ class UserController extends Controller
             'password' => 'required|confirmed'
         ]);
         
-        $input = $request->only('name', 'email', 'password');
+        $input = $request->only('name', 'email', 'nit', 'password');
 
         // Register user
         try
         {
             $user = new User; // Create new user instance
-            $user->name = $input['name'];
-            $user->email = $input['email'];
+            $user->name     = $input['name'];
+            $user->nit      = $input['nit'];
+            $user->email    = $input['email'];
             $user->password = app('hash')->make($input['password']);
             // Save user
             if ( $user->save() ) {

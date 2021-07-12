@@ -16,9 +16,11 @@ class Product extends Migration
         //
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(1);
             $table->string('name')->notNullable();
             $table->string('description')->notNullable();
             $table->string('price')->notNullable();
+            $table->timestamps();
         });
     }
 

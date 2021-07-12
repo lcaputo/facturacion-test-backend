@@ -11,7 +11,9 @@ class Client extends Model
      *
      * @var array
      */
+    protected $primaryKey = 'id';
     protected $fillable = [
+        'active',
         'name',
         'CC',
     ];

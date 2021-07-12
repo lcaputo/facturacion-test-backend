@@ -16,8 +16,10 @@ class Client extends Migration
         //
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(1);
             $table->string('name')->notNullable();
             $table->string('CC')->notNullable();
+            $table->timestamps();
         });
     }
 

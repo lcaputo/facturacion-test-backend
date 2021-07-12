@@ -11,9 +11,12 @@ class BillDetail extends Model
      *
      * @var array
      */
+    protected $table = 'bills_details';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'bill_fk',
-        'items'
+        'active',
+        'bill_id',
+        'product_id'
     ];
 
     /**
@@ -22,4 +25,12 @@ class BillDetail extends Model
      * @var array
      */
     protected $hidden = [];
+
+    public function Products() {
+        return $this->hasMany('App\Models\Product');
+    }
+
+    public function bills() {
+        return $this->hasMany('App\Models\Bill');
+    }
 }

@@ -10,7 +10,9 @@ class Product extends Model
      *
      * @var array
      */
+    protected $primaryKey = 'id';
     protected $fillable = [
+        'active',
         'name',
         'description',
         'price',

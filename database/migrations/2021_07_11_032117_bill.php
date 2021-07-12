@@ -16,9 +16,10 @@ class Bill extends Migration
         //
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('employee_id')->unsigned()->index();
+            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('client_id')->unsigned()->index();
+            $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->string('price');
             $table->string('iva');

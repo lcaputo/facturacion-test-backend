@@ -16,10 +16,12 @@ class BillDetail extends Migration
         //
         Schema::create('bills_details', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('bill_id')->unsigned()->index();
+            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('bill_id');
             $table->foreign('bill_id')->references('id')->on('bills')->onDelete('cascade');
-            $table->bigInteger('products')->unsigned()->index();
-            $table->foreign('products')->references('id')->on('products')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

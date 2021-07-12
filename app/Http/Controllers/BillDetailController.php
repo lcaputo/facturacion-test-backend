@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bill;
+use App\Models\BillDetail;
 
-class BillController extends Controller
+class BillDetailController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -18,42 +18,39 @@ class BillController extends Controller
     }
 
     public function list() {
-        
-        $bill = Bill::where('active', 1)->get();
-
-        return response()->json($bill);
+        $detail = BillDetail::all();
+        return response()->json($detail);
     }
 
     public function detail($id) {
-        $bill = Bill::find($id);
-        return response()->json($bill);
+        $detail = BillDetail::where('bill_id', $id)->get();
+        return response()->json($detail);
     }
 
+    
     public function create(Request $request) {
-        $input = $request->only('employee_id', 'client_id', 'price', 'iva', 'total');
+        $input = $request->only('bill_id', 'product_id');
         
         try
         {
-            $bill = new Bill();
+            $detail = new BillDetail();
 
-            $bill->employee_id  = $input['employee_id'];
-            $bill->client_id    = $input['client_id'];
-            $bill->price        = $input['price'];
-            $bill->iva          = $input['iva'];
-            $bill->total        = $input['total'];
+            $detail->bill_id      = $input['bill_id'];
+            $detail->product_id   = $input['product_id'];
 
-            if ( $bill->save() ) {
+
+            if ( $detail->save() ) {
                 $code = 201;
                 $output = [
-                    'bill' => $bill,
+                    'detail' => $detail,
                     'code' => $code,
-                    'message' => 'Bill created successfully.'
+                    'message' => 'Bill Detail created successfully.'
                 ];
             } else {
                 $code = 500;
                 $output = [
                     'code' => $code,
-                    'message' => 'An error ocurred while creating bill.'
+                    'message' => 'An error ocurred while creating detail.'
                 ];
             }
 
@@ -61,7 +58,7 @@ class BillController extends Controller
             $code = 500;
             $output = [
                 'code' => $code,
-                'message' => 'An error ocurred while creating bill.'
+                'message' => 'An error ocurred while creating detail.'
             ];
         }
 
@@ -70,31 +67,28 @@ class BillController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $input = $request->only('employee_id', 'client_id', 'price', 'iva', 'total');
+        $input = $request->only('bill_id', 'product_id');
         
         try
         {
-            $bill = Bill::find($id);
+            $detail = BillDetail::find($id);
         
-            $bill->employee_id  = $input['employee_id'];
-            $bill->client_id    = $input['client_id'];
-            $bill->price        = $input['price'];
-            $bill->iva          = $input['iva'];
-            $bill->total        = $input['total'];
+            $detail->bill_id      = $input['bill_id'];
+            $detail->product_id   = $input['product_id'];
 
-            if ( $bill->save() ) {
+
+            if ( $detail->save() ) {
                 $code = 200;
                 $output = [
-                    'bill' => $bill,
+                    'detail' => $detail,
                     'code' => $code,
-                    'message' => 'Bill updated successfully.'
+                    'message' => 'Bill Detail updated successfully.'
                 ];
             } else {
                 $code = 500;
                 $output = [
-                    'bill' => $bill,
                     'code' => $code,
-                    'message' => 'An error ocurred updating bill.'
+                    'message' => 'An error ocurred updating detail.'
                 ];
             }
 
@@ -102,7 +96,7 @@ class BillController extends Controller
             $code = 500;
             $output = [
                 'code' => $code,
-                'message' => 'An error ocurred updating bill.'
+                'message' => 'An error ocurred updating detail.'
             ];
         }
     }
@@ -110,11 +104,11 @@ class BillController extends Controller
     public function delete($id) {
         try
         {
-            $bill = Bill::find($id);
+            $detail = BillDetail::find($id);
             
-            $bill->active = 0;
+            $detail->active = 0;
             
-            if ( $bill->save() ) {
+            if ( $detail->save() ) {
                 $code = 200;
                 $output = [
                     'code' => $code,
@@ -124,7 +118,7 @@ class BillController extends Controller
                 $code = 500;
                 $output = [
                     'code' => $code,
-                    'message' => 'An error ocurred deleting bill.'
+                    'message' => 'An error ocurred deleting detail.'
                 ];
             }
 
@@ -132,7 +126,7 @@ class BillController extends Controller
             $code = 500;
             $output = [
                 'code' => $code,
-                'message' => 'An error ocurred deleting bill.'
+                'message' => 'An error ocurred deleting detail.'
             ];
         }
     }
